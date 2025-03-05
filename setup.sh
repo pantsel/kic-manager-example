@@ -6,7 +6,6 @@ helm upgrade --install kong kong/ingress -n kong --values kic.values.yaml
 
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.1.0/standard-install.yaml
 kubectl apply -f ./manifests/license.yaml
-kybectl apply -f ./manifests/konnect-client-secret.yaml
 kubectl apply -f ./manifests/gateway.yaml
 
 # Deploy the echo service

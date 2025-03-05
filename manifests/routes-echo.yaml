@@ -3,13 +3,20 @@ kind: Ingress
 metadata:
   name: echo
   annotations:
-    konghq.com/strip-path: "true"
+    konghq.com/strip-path: "false"
 spec:
   ingressClassName: kong
   rules:
     - http:
         paths:
           - path: /echo
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: echo
+                port:
+                  number: 1027
+          - path: /~/(pfx1|pfx2|pfx3|pfx4).*
             pathType: ImplementationSpecific
             backend:
               service:

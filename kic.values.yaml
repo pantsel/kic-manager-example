@@ -20,11 +20,11 @@ controller:
       enabled: true
       generateAdminApiService: true
     
-    # env:
-    #  feature_gates: "FillIDs=true"
-    konnect:
-      license:
-        enabled: true
+    env:
+     feature_gates: "FillIDs=true"
+    # konnect:
+    #   license:
+    #     enabled: true
       # enabled: true
       # controlPlaneID: "a5cbcc7a-522d-4145-b85b-cb4fcb3631a8"
       # tlsClientCertSecretName: konnect-client-tls
@@ -72,7 +72,7 @@ gateway:
     enabled: false
 
   env:
-    role: traditional
+    # role: traditional
     # konnect_mode: "on"
     # cluster_telemetry_endpoint: "b7246830f0.eu.tp0.konghq.com:443"
     # cluster_telemetry_server_name: "b7246830f0.eu.tp0.konghq.com"
