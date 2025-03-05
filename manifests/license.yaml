@@ -1,0 +1,7 @@
+---
+apiVersion: configuration.konghq.com/v1alpha1
+enabled: true
+kind: KongLicense
+metadata:
+  name: kong-license
+rawLicenseString: "$(echo $KONG_LICENSE_DATA)"

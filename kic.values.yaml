@@ -1,0 +1,88 @@
+deployment:
+  test:
+    enabled: false
+
+controller:
+  proxy:
+    nameOverride: "{{ .Release.Name }}-gateway-proxy"
+
+  enabled: true
+
+  deployment:
+    kong:
+      enabled: false
+      
+
+  ingressController:
+    enabled: true
+
+    gatewayDiscovery:
+      enabled: true
+      generateAdminApiService: true
+    
+    # env:
+    #  feature_gates: "FillIDs=true"
+    konnect:
+      license:
+        enabled: true
+      # enabled: true
+      # controlPlaneID: "a5cbcc7a-522d-4145-b85b-cb4fcb3631a8"
+      # tlsClientCertSecretName: konnect-client-tls
+      # apiHostname: "eu.kic.api.konghq.com"
+
+  podAnnotations:
+    kuma.io/gateway: enabled
+    # This port must match your Kong admin API port. 8444 is the default.
+    # If you set gateway.admin.tls.containerPort, change these annotations
+    # to use that value.
+    traffic.kuma.io/exclude-outbound-ports: "8444"
+    traffic.sidecar.istio.io/excludeOutboundPorts: "8444"
+
+gateway:
+  image:
+    repository: kong/kong-gateway
+    tag: "3.9.0.1"
+  enabled: true
+  deployment:
+    kong:
+      enabled: true
+
+  admin:
+    enabled: true
+    type: ClusterIP
+    clusterIP: None
+
+    http:
+      # Enable plaintext HTTP listen for the admin API
+      # Disabling this and using a TLS listen only is recommended for most configuration
+      enabled: true
+      servicePort: 8001
+      containerPort: 8001
+      # Set a nodePort which is available if service type is NodePort
+      # nodePort: 32080
+      # Additional listen parameters, e.g. "reuseport", "backlog=16384"
+      parameters: []
+
+  manager:
+    # Enable creating a Kubernetes service for Kong Manager
+    enabled: true
+    type: ClusterIP
+
+  ingressController:
+    enabled: false
+
+  env:
+    role: traditional
+    # konnect_mode: "on"
+    # cluster_telemetry_endpoint: "b7246830f0.eu.tp0.konghq.com:443"
+    # cluster_telemetry_server_name: "b7246830f0.eu.tp0.konghq.com"
+    # cluster_cert: /etc/secrets/konnect-client-tls/tls.crt
+    # cluster_cert_key: /etc/secrets/konnect-client-tls/tls.key
+    database: "off"
+    admin_gui_api_url: "https://manager.k8s.orb.local/admin-api"
+    # admin_gui_path: "/manager"
+  # secretVolumes:
+  #   - konnect-client-tls
+
+enterprise:
+  enabled: true

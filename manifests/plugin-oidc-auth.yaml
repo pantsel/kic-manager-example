@@ -1,0 +1,24 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: oidc-auth
+config:
+  issuer: https://login.microsoftonline.com/<tenant_id>/v2.0/.well-known/openid-configuration
+  auth_methods:
+    - authorization_code
+    - session
+    - bearer
+  client_id:
+    - <client_id>
+  client_secret:
+    - <client_secret>
+  client_auth:
+    - client_secret_post
+  scopes:
+    - openid
+    - profile
+    - email
+    - offline_access
+    - api://<tenant_id>/.default
+  display_errors: true
+plugin: openid-connect

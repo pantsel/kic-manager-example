@@ -1,0 +1,29 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: manager
+  namespace: kong # Specify the target namespace here
+  annotations:
+    konghq.com/strip-path: "true"
+    konghq.com/plugins: oidc-auth
+spec:
+  ingressClassName: kong
+  rules:
+    - host: manager.k8s.orb.local
+      http:
+        paths:
+          - path: /admin-api
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: kong-gateway-admin
+                port:
+                  number: 8001
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kong-gateway-manager
+                port:
+                  number: 8002
